@@ -45,6 +45,7 @@ module PDFactory
     def connection
       @connection ||= Faraday.new(@url) do |connection|
         connection.basic_auth @user, @password
+        connection.adapter Faraday.default_adapter
       end
     end
 
