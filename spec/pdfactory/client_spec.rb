@@ -29,7 +29,7 @@ RSpec.describe PDFactory::Client do
     let(:path_to_expected_file) { 'spec/fixtures/expected.pdf' }
     let(:path_to_test_file) { 'tmp/test.pdf' }
 
-    it 'requires a user if password is set' do
+    it 'requires calls the service and gets a PDF binary' do
       FileUtils.rm(path_to_test_file) if File.exist?(path_to_test_file)
 
       VCR.use_cassette('html2pdf') do
