@@ -44,7 +44,11 @@ module PDFactory
 
     def connection
       @connection ||= Faraday.new(@url) do |connection|
-        connection.basic_auth @user, @password
+        if Gem::Version.new(::Faraday::VERSION) >= Gem::Version.new("2.0.0")
+          connection.request :authorization, :basic, @user, @password
+        else
+          connection.basic_auth @user, @password
+        end
         connection.adapter Faraday.default_adapter
       end
     end
