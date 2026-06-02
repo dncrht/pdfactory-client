@@ -20,14 +20,21 @@ module PDFactory
       @password = password
     end
 
-    def html2pdf(html)
-      pdf = call_api('/pdf', { html: html })
+    def html2pdf(html, query = nil)
+      pdf = call_api(format_path(query), { html: html })
       return unless pdf
 
       Base64.decode64(pdf)
     end
 
     private
+
+    def format_path(query = nil)
+      '/pdf' + (query ? "?#{URI.encode_www_form(query)}" : '')
+    rescue => e
+      Rails.logger.error "Error formatting URL: #{e.message}" if defined?(Rails)
+      '/pdf'
+    end
 
     def call_api(endpoint, body, http_method = :post)
       response = connection.send(http_method) do |response|
