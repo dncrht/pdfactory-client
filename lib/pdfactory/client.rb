@@ -39,6 +39,7 @@ module PDFactory
     def call_api(endpoint, body, http_method = :post)
       response = connection.send(http_method) do |response|
         response.url(endpoint)
+        response.headers['Content-Type'] = 'application/x-www-form-urlencoded'
         response.body = URI.encode_www_form(body)
       end
 
